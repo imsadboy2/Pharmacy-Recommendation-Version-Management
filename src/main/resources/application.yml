@@ -1,0 +1,77 @@
+spring:
+  profiles:
+    active: local # default
+    group:
+      local:
+        - common
+      prod:
+        - common
+
+---
+spring:
+  config:
+    activate:
+      on-profile: common
+
+kakao:
+  rest:
+    api:
+      key: ${KAKAO_REST_API_KEY}
+
+
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://localhost:3306/pharmacy-recommendation
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+  redis:
+    host: localhost
+    port: 6379
+  jpa:
+    hibernate:
+      ddl-auto: validate
+    show-sql: true
+
+pharmacy:
+  recommendation:
+    base:
+      url: http://localhost:8080/dir/
+
+---
+
+spring:
+  config:
+    activate:
+      on-profile: prod
+  datasource:
+    driver-class-name: org.mariadb.jdbc.Driver
+    url: jdbc:mariadb://pharmacy-recommendation-database:3306/pharmacy-recommendation
+    username: ${SPRING_DATASOURCE_USERNAME}
+    password: ${SPRING_DATASOURCE_PASSWORD}
+  redis:
+    host: pharmacy-recommendation-redis
+    port: 6379
+  jpa:
+    hibernate:
+      ddl-auto: validate # prod 배포시 validate
+    show-sql: true
+
+pharmacy:
+  recommendation:
+    base:
+      url: http://localhost/dir/ # aws ec2 ip 할당 받은 후 변경 해야하는데 과금이 될 수 있다고 해서 마지막 챕터는 강의만 수강 ㅠ
+
+      # 강의 에서는 Ec2 인스턴스에 elastic ip 를 할당 받은 후 ec2 를 ssh 클라이언트로 접속
+
+      # ec2에 접속한 상태로 깃, 도커, 도커 컴포즈를 설치 후 최종 소스코드 저장소를 클론 해준다.
+
+      # .env 파일을 로컬에서 했던 것 처럼 클라우드 서버에도 생성해준다.
+
+      # jdk 설치후 자르 파일 생성
+
+      # docker 이미지를 받고 도커 컴포즈 실행
